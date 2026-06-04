@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { api, unwrap } from '../api/client';
 import ProductCard, { Product } from '../components/ProductCard';
 import CartBar from '../components/CartBar';
+import BannerSlot from '../components/BannerSlot';
 import { colors, spacing } from '../theme';
 
 export default function CategoryScreen({ route, navigation }: any) {
@@ -25,6 +26,7 @@ export default function CategoryScreen({ route, navigation }: any) {
         numColumns={2}
         columnWrapperStyle={{ paddingHorizontal: spacing.sm }}
         contentContainerStyle={{ paddingVertical: spacing.sm, paddingBottom: 90 }}
+        ListHeaderComponent={<BannerSlot screen="category" position="top" />}
         renderItem={({ item }) => (
           <ProductCard product={item} onPress={() => navigation.navigate('ProductDetail', { id: item.id })} />
         )}

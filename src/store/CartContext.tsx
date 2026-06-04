@@ -18,6 +18,7 @@ export interface CartItem {
 export interface CartTotals {
   subtotal: number;
   delivery_fee: number;
+  urgent_fee: number;
   discount: number;
   total: number;
   free_delivery_above: number;

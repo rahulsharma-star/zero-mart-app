@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { api, unwrap } from '../api/client';
+import { api, unwrap, assetUrl } from '../api/client';
 import QtyStepper from '../components/QtyStepper';
 import CartBar from '../components/CartBar';
 import { colors, radius, spacing } from '../theme';
@@ -28,7 +28,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
   return (
     <View style={styles.root}>
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
-        <Image source={{ uri: p.image_url }} style={styles.image} />
+        <Image source={{ uri: assetUrl(p.image_url) }} style={styles.image} />
         <View style={styles.body}>
           <Text style={styles.name}>{p.name}</Text>
           <Text style={styles.unit}>{p.unit}</Text>

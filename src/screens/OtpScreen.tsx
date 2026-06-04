@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { useTranslation } from 'react-i18next';
 import { api, unwrap, errMsg } from '../api/client';
 import { useAuth } from '../store/AuthContext';
-import { colors, radius, spacing } from '../theme';
+import { colors, radius, spacing, shadow } from '../theme';
 
 export default function OtpScreen({ route }: any) {
   const { t } = useTranslation();
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.card, padding: spacing.xl, justifyContent: 'center' },
   title: { fontSize: 22, fontWeight: '800', color: colors.text },
   hint: { color: colors.muted, marginTop: 4, marginBottom: 24 },
-  otp: { borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, fontSize: 24, letterSpacing: 8, textAlign: 'center', paddingVertical: 14 },
-  name: { borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, fontSize: 16, paddingVertical: 14, paddingHorizontal: 16, marginTop: 16 },
-  btn: { backgroundColor: colors.primary, borderRadius: radius.md, paddingVertical: 16, alignItems: 'center', marginTop: 24 },
-  btnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  otp: { borderWidth: 1.5, borderColor: colors.border, borderRadius: radius.md, fontSize: 24, letterSpacing: 8, textAlign: 'center', paddingVertical: 14, backgroundColor: '#fbfcfd', color: colors.text },
+  name: { borderWidth: 1.5, borderColor: colors.border, borderRadius: radius.md, fontSize: 16, paddingVertical: 14, paddingHorizontal: 16, marginTop: 16, backgroundColor: '#fbfcfd', color: colors.text },
+  btn: { backgroundColor: colors.primary, borderRadius: radius.md, paddingVertical: 16, alignItems: 'center', marginTop: 24, ...shadow.card },
+  btnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
   resend: { color: colors.primary, textAlign: 'center', marginTop: 20, fontWeight: '600' },
 });

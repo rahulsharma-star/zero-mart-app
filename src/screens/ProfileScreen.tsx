@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../store/AuthContext';
 import { setLanguage } from '../i18n';
 import { api } from '../api/client';
-import { colors, radius, spacing } from '../theme';
+import BannerSlot from '../components/BannerSlot';
+import { colors, radius, spacing, shadow } from '../theme';
 
 export default function ProfileScreen() {
   const { t, i18n } = useTranslation();
@@ -45,6 +46,8 @@ export default function ProfileScreen() {
         ))}
       </View>
 
+      <BannerSlot screen="profile" position="middle" />
+
       <TouchableOpacity style={styles.logout} onPress={signOut}>
         <Text style={styles.logoutText}>{t('logout')}</Text>
       </TouchableOpacity>
@@ -54,7 +57,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg, padding: spacing.lg },
-  header: { alignItems: 'center', backgroundColor: colors.card, borderRadius: radius.lg, padding: spacing.xl, borderWidth: 1, borderColor: colors.border },
+  header: { alignItems: 'center', backgroundColor: colors.card, borderRadius: radius.lg, padding: spacing.xl, ...shadow.card },
   avatar: { width: 72, height: 72, borderRadius: 36, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center' },
   avatarText: { color: '#fff', fontSize: 28, fontWeight: '800' },
   name: { fontSize: 18, fontWeight: '800', color: colors.text, marginTop: spacing.md },

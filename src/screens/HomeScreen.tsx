@@ -11,10 +11,11 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { api, unwrap } from '../api/client';
+import { api, unwrap, assetUrl } from '../api/client';
 import ProductCard, { Product } from '../components/ProductCard';
 import CartBar from '../components/CartBar';
-import { colors, radius, spacing } from '../theme';
+import BannerSlot from '../components/BannerSlot';
+import { colors, radius, spacing, shadow } from '../theme';
 
 export default function HomeScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -65,24 +66,25 @@ export default function HomeScreen({ navigation }: any) {
         ListHeaderComponent={
           <View>
             <View style={styles.header}>
-              <Text style={styles.brand}>● {storeName}</Text>
+              <View>
+                <Text style={styles.deliverTo}>DELIVERING TO</Text>
+                <Text style={styles.brand}>📍 {storeName}</Text>
+              </View>
             </View>
             <View style={styles.searchWrap}>
-              <TextInput
-                style={styles.search}
-                placeholder={t('search')}
-                value={search}
-                onChangeText={runSearch}
-              />
+              <View style={styles.search}>
+                <Text style={styles.searchIcon}>🔍</Text>
+                <TextInput
+                  style={styles.searchInput}
+                  placeholder={t('search')}
+                  placeholderTextColor={colors.faint}
+                  value={search}
+                  onChangeText={runSearch}
+                />
+              </View>
             </View>
 
-            {home?.banners?.length > 0 && (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: spacing.md }}>
-                {home.banners.map((b: any) => (
-                  <Image key={b.id} source={{ uri: b.image_url }} style={styles.banner} />
-                ))}
-              </ScrollView>
-            )}
+            <BannerSlot screen="home" position="top" />
 
             <Text style={styles.section}>{t('categories')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -92,7 +94,7 @@ export default function HomeScreen({ navigation }: any) {
                   style={styles.cat}
                   onPress={() => navigation.navigate('Category', { slug: c.slug, name: c.name })}
                 >
-                  <Image source={{ uri: c.image_url }} style={styles.catImg} />
+                  <Image source={{ uri: assetUrl(c.image_url) }} style={styles.catImg} />
                   <Text numberOfLines={1} style={styles.catName}>
                     {c.name}
                   </Text>
@@ -100,7 +102,17 @@ export default function HomeScreen({ navigation }: any) {
               ))}
             </ScrollView>
 
-            <Text style={styles.section}>{t('app_name')}</Text>
+            <BannerSlot screen="home" position="middle" />
+
+            <View style={styles.sectionRow}>
+              <Text style={styles.section}>{search ? t('search') : 'Popular near you'}</Text>
+            </View>
+          </View>
+        }
+        ListFooterComponent={
+          <View>
+            <BannerSlot screen="home" position="bottom" />
+            <BannerSlot screen="home" position="footer" />
           </View>
         }
       />
@@ -111,13 +123,16 @@ export default function HomeScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
-  header: { paddingHorizontal: spacing.lg, paddingTop: spacing.md },
-  brand: { fontSize: 20, fontWeight: '900', color: colors.primary },
-  searchWrap: { paddingHorizontal: spacing.lg, marginTop: spacing.sm },
-  search: { backgroundColor: '#fff', borderRadius: radius.md, paddingHorizontal: 16, paddingVertical: 12, borderWidth: 1, borderColor: colors.border },
-  banner: { width: 300, height: 130, borderRadius: radius.md, marginLeft: spacing.lg, backgroundColor: '#ddd' },
-  section: { fontSize: 16, fontWeight: '800', color: colors.text, paddingHorizontal: spacing.lg, marginTop: spacing.lg, marginBottom: spacing.sm },
-  cat: { alignItems: 'center', width: 80, marginLeft: spacing.lg },
-  catImg: { width: 64, height: 64, borderRadius: radius.pill, backgroundColor: '#ddd' },
-  catName: { fontSize: 12, color: colors.text, marginTop: 4, textAlign: 'center' },
+  header: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  deliverTo: { fontSize: 10, fontWeight: '800', color: colors.primary, letterSpacing: 1 },
+  brand: { fontSize: 18, fontWeight: '900', color: colors.text, marginTop: 2 },
+  searchWrap: { paddingHorizontal: spacing.lg, marginTop: spacing.md },
+  search: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: radius.md, paddingHorizontal: 14, ...shadow.card },
+  searchIcon: { fontSize: 15, marginRight: 8, color: colors.muted },
+  searchInput: { flex: 1, paddingVertical: 13, fontSize: 14, color: colors.text },
+  section: { fontSize: 17, fontWeight: '800', color: colors.text, paddingHorizontal: spacing.lg, marginTop: spacing.lg, marginBottom: spacing.sm },
+  sectionRow: { },
+  cat: { alignItems: 'center', width: 76, marginLeft: spacing.lg },
+  catImg: { width: 64, height: 64, borderRadius: radius.lg, backgroundColor: colors.primaryTint },
+  catName: { fontSize: 12, color: colors.text, marginTop: 6, textAlign: 'center', fontWeight: '600' },
 });

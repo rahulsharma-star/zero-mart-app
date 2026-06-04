@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, radius, spacing } from '../theme';
+import { assetUrl } from '../api/client';
+import { colors, radius, spacing, shadow } from '../theme';
 import QtyStepper from './QtyStepper';
 
 export interface Product {
@@ -25,7 +26,7 @@ export default function ProductCard({ product, onPress }: { product: Product; on
     <View style={styles.card}>
       <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
         <View>
-          <Image source={{ uri: product.image_url }} style={styles.image} />
+          <Image source={{ uri: assetUrl(product.image_url) }} style={styles.image} />
           {discount > 0 && (
             <View style={styles.badge}>
               <Text style={styles.badgeText}>
@@ -61,24 +62,23 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     padding: spacing.sm,
     margin: spacing.xs,
-    borderWidth: 1,
-    borderColor: colors.border,
+    ...shadow.card,
   },
-  image: { width: '100%', height: 110, borderRadius: radius.sm, backgroundColor: '#eee' },
+  image: { width: '100%', height: 118, borderRadius: radius.sm, backgroundColor: '#f1f3f5' },
   badge: {
     position: 'absolute',
-    top: 6,
-    left: 6,
+    top: 8,
+    left: 8,
     backgroundColor: colors.primary,
     borderRadius: radius.sm,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
   },
-  badgeText: { color: '#fff', fontSize: 10, fontWeight: '700' },
-  name: { marginTop: 6, fontWeight: '600', color: colors.text, fontSize: 13 },
-  unit: { color: colors.muted, fontSize: 12, marginTop: 2 },
-  bottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
-  price: { fontWeight: '800', color: colors.text },
-  mrp: { color: colors.muted, fontSize: 12, textDecorationLine: 'line-through' },
-  oos: { color: colors.danger, fontSize: 11, fontWeight: '600' },
+  badgeText: { color: '#fff', fontSize: 10, fontWeight: '800' },
+  name: { marginTop: 8, fontWeight: '700', color: colors.text, fontSize: 13, lineHeight: 18 },
+  unit: { color: colors.faint, fontSize: 12, marginTop: 2 },
+  bottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 },
+  price: { fontWeight: '800', color: colors.text, fontSize: 15 },
+  mrp: { color: colors.faint, fontSize: 12, textDecorationLine: 'line-through' },
+  oos: { color: colors.danger, fontSize: 11, fontWeight: '700' },
 });

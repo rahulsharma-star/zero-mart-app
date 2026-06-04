@@ -73,6 +73,11 @@ const resources = {
       go_online_hint: 'Go online to receive orders',
       paid: 'Paid',
       due: 'Due',
+      urgent_delivery: 'Urgent delivery',
+      urgent_delivery_desc: 'Get it on priority, ahead of regular orders',
+      urgent: 'Urgent',
+      urgent_fee: 'Urgent fee',
+      price_details: 'Bill details',
     },
   },
   hi: {
@@ -145,6 +150,11 @@ const resources = {
       go_online_hint: 'ऑर्डर पाने के लिए ऑनलाइन हों',
       paid: 'भुगतान हुआ',
       due: 'बकाया',
+      urgent_delivery: 'अर्जेंट डिलीवरी',
+      urgent_delivery_desc: 'सामान्य ऑर्डर से पहले, प्राथमिकता पर पाएँ',
+      urgent: 'अर्जेंट',
+      urgent_fee: 'अर्जेंट शुल्क',
+      price_details: 'बिल विवरण',
     },
   },
 };

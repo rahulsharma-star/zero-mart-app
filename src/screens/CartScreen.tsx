@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { assetUrl } from '../api/client';
 import { useCart } from '../store/CartContext';
 import QtyStepper from '../components/QtyStepper';
-import { colors, radius, spacing } from '../theme';
+import BannerSlot from '../components/BannerSlot';
+import { colors, radius, spacing, shadow } from '../theme';
 
 export default function CartScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -23,9 +25,11 @@ export default function CartScreen({ navigation }: any) {
         data={items}
         keyExtractor={(it) => it.cart_item_id}
         contentContainerStyle={{ padding: spacing.md }}
+        ListHeaderComponent={<BannerSlot screen="cart" position="top" />}
+        ListFooterComponent={<BannerSlot screen="cart" position="bottom" />}
         renderItem={({ item }) => (
           <View style={styles.row}>
-            <Image source={{ uri: item.product.image_url }} style={styles.img} />
+            <Image source={{ uri: assetUrl(item.product.image_url) }} style={styles.img} />
             <View style={{ flex: 1, marginLeft: spacing.md }}>
               <Text style={styles.name} numberOfLines={2}>
                 {item.product.name}
@@ -69,8 +73,8 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   empty: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.bg },
   emptyText: { color: colors.muted, fontSize: 16 },
-  row: { flexDirection: 'row', backgroundColor: colors.card, borderRadius: radius.md, padding: spacing.sm, marginBottom: spacing.sm, alignItems: 'center', borderWidth: 1, borderColor: colors.border },
-  img: { width: 56, height: 56, borderRadius: radius.sm, backgroundColor: '#eee' },
+  row: { flexDirection: 'row', backgroundColor: colors.card, borderRadius: radius.md, padding: spacing.sm, marginBottom: spacing.sm, alignItems: 'center', ...shadow.card },
+  img: { width: 56, height: 56, borderRadius: radius.sm, backgroundColor: '#f1f3f5' },
   name: { fontWeight: '600', color: colors.text },
   unit: { color: colors.muted, fontSize: 12 },
   price: { fontWeight: '800', color: colors.text, marginTop: 2 },
@@ -80,6 +84,6 @@ const styles = StyleSheet.create({
   sumValue: { color: colors.text },
   bold: { fontWeight: '800', color: colors.text, fontSize: 16 },
   divider: { height: 1, backgroundColor: colors.border, marginVertical: 8 },
-  checkout: { backgroundColor: colors.primary, borderRadius: radius.md, paddingVertical: 16, alignItems: 'center', marginTop: spacing.md },
+  checkout: { backgroundColor: colors.primary, borderRadius: radius.md, paddingVertical: 16, alignItems: 'center', marginTop: spacing.md, ...shadow.card },
   checkoutText: { color: '#fff', fontWeight: '800', fontSize: 16 },
 });

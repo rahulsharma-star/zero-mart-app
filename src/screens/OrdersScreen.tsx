@@ -3,7 +3,8 @@ import { View, Text, FlatList, StyleSheet, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { api, unwrap } from '../api/client';
-import { colors, radius, spacing } from '../theme';
+import BannerSlot from '../components/BannerSlot';
+import { colors, radius, spacing, shadow } from '../theme';
 
 const statusColors: Record<string, string> = {
   delivered: colors.success,
@@ -40,6 +41,7 @@ export default function OrdersScreen() {
       data={orders}
       keyExtractor={(o) => o.id}
       contentContainerStyle={{ padding: spacing.md }}
+      ListHeaderComponent={<BannerSlot screen="orders" position="top" />}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -53,7 +55,12 @@ export default function OrdersScreen() {
       renderItem={({ item }) => (
         <View style={styles.card}>
           <View style={styles.rowBetween}>
-            <Text style={styles.no}>{item.order_number}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Text style={styles.no}>{item.order_number}</Text>
+              {item.is_urgent && (
+                <Text style={styles.urgentTag}>⚡ {t('urgent')}</Text>
+              )}
+            </View>
             <Text style={[styles.status, { color: statusColors[item.status] ?? colors.muted }]}>
               {item.status}
             </Text>
@@ -74,9 +81,10 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   empty: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.bg },
   emptyText: { color: colors.muted, fontSize: 16 },
-  card: { backgroundColor: colors.card, borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.border },
+  card: { backgroundColor: colors.card, borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.sm, ...shadow.card },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   no: { fontWeight: '800', color: colors.text },
+  urgentTag: { fontSize: 11, fontWeight: '800', color: colors.danger, backgroundColor: '#fde8ea', paddingHorizontal: 6, paddingVertical: 2, borderRadius: radius.sm, overflow: 'hidden' },
   status: { fontWeight: '700', textTransform: 'capitalize' },
   items: { color: colors.muted, marginVertical: 6 },
   date: { color: colors.muted, fontSize: 12 },

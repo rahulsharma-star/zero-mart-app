@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '../store/CartContext';
-import { colors, radius, spacing } from '../theme';
+import { colors, radius, spacing, shadow } from '../theme';
 
 export default function CartBar({ onPress }: { onPress: () => void }) {
   const { t } = useTranslation();
@@ -30,13 +30,14 @@ const styles = StyleSheet.create({
     bottom: spacing.lg,
     backgroundColor: colors.primary,
     borderRadius: radius.md,
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: spacing.lg,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    ...shadow.float,
   },
-  count: { color: '#fff', fontWeight: '700' },
-  total: { color: '#eafaf1', fontSize: 12 },
-  view: { color: '#fff', fontWeight: '800' },
+  count: { color: '#fff', fontWeight: '800', fontSize: 15 },
+  total: { color: '#eafaf1', fontSize: 12, marginTop: 1 },
+  view: { color: '#fff', fontWeight: '800', fontSize: 15 },
 });
