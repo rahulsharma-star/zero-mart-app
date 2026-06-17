@@ -15,10 +15,12 @@ import { api, unwrap, assetUrl } from '../api/client';
 import ProductCard, { Product } from '../components/ProductCard';
 import CartBar from '../components/CartBar';
 import BannerSlot from '../components/BannerSlot';
+import SupportButtons from '../components/SupportButtons';
+import VoiceSearchButton from '../components/VoiceSearchButton';
 import { colors, radius, spacing, shadow } from '../theme';
 
 export default function HomeScreen({ navigation }: any) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [home, setHome] = useState<any>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState('');
@@ -49,7 +51,8 @@ export default function HomeScreen({ navigation }: any) {
     setProducts(unwrap(res).items);
   };
 
-  const storeName = home?.settings?.store?.name?.en ?? t('app_name');
+  const storeNameMl = home?.settings?.store?.name;
+  const storeName = storeNameMl?.[i18n.language] ?? storeNameMl?.hi ?? storeNameMl?.en ?? t('app_name');
 
   return (
     <View style={styles.root}>
@@ -66,8 +69,8 @@ export default function HomeScreen({ navigation }: any) {
         ListHeaderComponent={
           <View>
             <View style={styles.header}>
-              <View>
-                <Text style={styles.deliverTo}>DELIVERING TO</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.greeting}>{t('greeting')}</Text>
                 <Text style={styles.brand}>📍 {storeName}</Text>
               </View>
             </View>
@@ -81,6 +84,7 @@ export default function HomeScreen({ navigation }: any) {
                   value={search}
                   onChangeText={runSearch}
                 />
+                <VoiceSearchButton onResult={(text) => runSearch(text)} color={colors.primary} />
               </View>
             </View>
 
@@ -112,6 +116,11 @@ export default function HomeScreen({ navigation }: any) {
         ListFooterComponent={
           <View>
             <BannerSlot screen="home" position="bottom" />
+            <View style={styles.helpCard}>
+              <Text style={styles.helpTitle}>{t('need_help')}</Text>
+              <Text style={styles.helpDesc}>{t('help_desc')}</Text>
+              <SupportButtons />
+            </View>
             <BannerSlot screen="home" position="footer" />
           </View>
         }
@@ -124,8 +133,11 @@ export default function HomeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   header: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  deliverTo: { fontSize: 10, fontWeight: '800', color: colors.primary, letterSpacing: 1 },
+  greeting: { fontSize: 15, fontWeight: '800', color: colors.primary },
   brand: { fontSize: 18, fontWeight: '900', color: colors.text, marginTop: 2 },
+  helpCard: { backgroundColor: colors.card, borderRadius: radius.lg, padding: spacing.lg, marginHorizontal: spacing.lg, marginTop: spacing.lg, ...shadow.card },
+  helpTitle: { fontSize: 16, fontWeight: '900', color: colors.text },
+  helpDesc: { color: colors.muted, marginTop: 2, marginBottom: spacing.md },
   searchWrap: { paddingHorizontal: spacing.lg, marginTop: spacing.md },
   search: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: radius.md, paddingHorizontal: 14, ...shadow.card },
   searchIcon: { fontSize: 15, marginRight: 8, color: colors.muted },

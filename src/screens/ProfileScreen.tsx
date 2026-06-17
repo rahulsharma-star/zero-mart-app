@@ -5,6 +5,7 @@ import { useAuth } from '../store/AuthContext';
 import { setLanguage } from '../i18n';
 import { api } from '../api/client';
 import BannerSlot from '../components/BannerSlot';
+import SupportButtons from '../components/SupportButtons';
 import { colors, radius, spacing, shadow } from '../theme';
 
 export default function ProfileScreen() {
@@ -46,6 +47,12 @@ export default function ProfileScreen() {
         ))}
       </View>
 
+      <Text style={styles.section}>{t('help')}</Text>
+      <View style={styles.helpCard}>
+        <Text style={styles.helpDesc}>{t('help_desc')}</Text>
+        <SupportButtons />
+      </View>
+
       <BannerSlot screen="profile" position="middle" />
 
       <TouchableOpacity style={styles.logout} onPress={signOut}>
@@ -68,6 +75,8 @@ const styles = StyleSheet.create({
   langActive: { borderColor: colors.primary, borderWidth: 2 },
   langText: { color: colors.text, fontWeight: '600' },
   langTextActive: { color: colors.primary },
+  helpCard: { backgroundColor: colors.card, borderRadius: radius.md, padding: spacing.lg, borderWidth: 1, borderColor: colors.border },
+  helpDesc: { color: colors.muted, marginBottom: spacing.md },
   logout: { marginTop: spacing.xl, paddingVertical: 14, alignItems: 'center', borderRadius: radius.md, borderWidth: 1, borderColor: colors.danger },
   logoutText: { color: colors.danger, fontWeight: '800' },
 });

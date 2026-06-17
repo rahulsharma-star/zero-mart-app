@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { initI18n } from './src/i18n';
 import { AuthProvider } from './src/store/AuthContext';
 import { CartProvider } from './src/store/CartContext';
+import { SettingsProvider } from './src/store/SettingsContext';
 import RootNavigator from './src/navigation/RootNavigator';
 import { colors } from './src/theme';
 
@@ -31,11 +32,13 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-        <AuthProvider>
-          <CartProvider>
-            <RootNavigator />
-          </CartProvider>
-        </AuthProvider>
+        <SettingsProvider>
+          <AuthProvider>
+            <CartProvider>
+              <RootNavigator />
+            </CartProvider>
+          </AuthProvider>
+        </SettingsProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
