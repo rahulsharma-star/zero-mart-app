@@ -9,9 +9,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { api, unwrap, assetUrl } from '../api/client';
+import { api, unwrap, assetUrl, errMsg } from '../api/client';
 import ProductCard, { Product } from '../components/ProductCard';
 import CartBar from '../components/CartBar';
 import BannerSlot from '../components/BannerSlot';
@@ -49,6 +50,22 @@ export default function HomeScreen({ navigation }: any) {
     setSearch(q);
     const res = await api.get('/catalog/products', { params: { search: q, limit: 30 } });
     setProducts(unwrap(res).items);
+  };
+
+  const sendOpenRequest = async () => {
+    const text = search.trim();
+    if (text.length < 3) return;
+    try {
+      let pincode = '110001';
+      try {
+        const addrs = unwrap(await api.get('/addresses'));
+        if (addrs[0]?.pincode) pincode = addrs[0].pincode;
+      } catch { /* use default */ }
+      const res = unwrap(await api.post('/requests', { request_text: text, pincode }));
+      navigation.navigate('OpenRequest', { requestId: res.id, requestText: text });
+    } catch (e) {
+      Alert.alert(t('error'), errMsg(e));
+    }
   };
 
   const storeNameMl = home?.settings?.store?.name;
@@ -111,6 +128,12 @@ export default function HomeScreen({ navigation }: any) {
             <View style={styles.sectionRow}>
               <Text style={styles.section}>{search ? t('search') : 'Popular near you'}</Text>
             </View>
+            {search.trim().length >= 3 && products.length === 0 && (
+              <TouchableOpacity style={styles.openReq} onPress={sendOpenRequest}>
+                <Text style={styles.openReqTitle}>{t('not_found_ask_shops')}</Text>
+                <Text style={styles.openReqSub}>{t('not_found_ask_shops_desc')}</Text>
+              </TouchableOpacity>
+            )}
           </View>
         }
         ListFooterComponent={
@@ -144,6 +167,9 @@ const styles = StyleSheet.create({
   searchInput: { flex: 1, paddingVertical: 13, fontSize: 14, color: colors.text },
   section: { fontSize: 17, fontWeight: '800', color: colors.text, paddingHorizontal: spacing.lg, marginTop: spacing.lg, marginBottom: spacing.sm },
   sectionRow: { },
+  openReq: { marginHorizontal: spacing.lg, marginBottom: spacing.md, backgroundColor: colors.primaryTint, borderRadius: radius.md, padding: spacing.md },
+  openReqTitle: { fontWeight: '800', color: colors.primary },
+  openReqSub: { color: colors.muted, marginTop: 4, fontSize: 13 },
   cat: { alignItems: 'center', width: 76, marginLeft: spacing.lg },
   catImg: { width: 64, height: 64, borderRadius: radius.lg, backgroundColor: colors.primaryTint },
   catName: { fontSize: 12, color: colors.text, marginTop: 6, textAlign: 'center', fontWeight: '600' },

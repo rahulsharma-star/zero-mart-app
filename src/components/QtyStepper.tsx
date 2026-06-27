@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { colors, radius } from '../theme';
 import { useCart } from '../store/CartContext';
@@ -14,6 +14,8 @@ export default function QtyStepper({ productId, disabled }: { productId: string;
     setBusy(true);
     try {
       await fn();
+    } catch (e: any) {
+      Alert.alert(t('cart'), e?.message ?? t('error'));
     } finally {
       setBusy(false);
     }

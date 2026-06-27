@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { api, unwrap } from '../api/client';
+import { api, unwrap, errMsg } from '../api/client';
 import { useAuth } from './AuthContext';
 
 export interface CartItem {
@@ -71,7 +71,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [reload]);
 
   const add = async (productId: string, qty = 1) => {
-    apply(unwrap(await api.post('/cart/items', { product_id: productId, quantity: qty })));
+    try {
+      apply(unwrap(await api.post('/cart/items', { product_id: productId, quantity: qty })));
+    } catch (e) {
+      throw new Error(errMsg(e));
+    }
   };
 
   const setQty = async (productId: string, qty: number) => {

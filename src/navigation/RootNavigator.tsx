@@ -23,6 +23,9 @@ import ProfileScreen from '../screens/ProfileScreen';
 import DeliveryHome from '../screens/delivery/DeliveryHome';
 import DeliveryOrderDetail from '../screens/delivery/DeliveryOrderDetail';
 import Earnings from '../screens/delivery/Earnings';
+import VendorHome from '../screens/vendor/VendorHome';
+import VendorOrderDetail from '../screens/vendor/VendorOrderDetail';
+import OpenRequestScreen from '../screens/OpenRequestScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,6 +59,17 @@ function CustomerStack() {
       <Stack.Screen name="Checkout" component={CheckoutScreen} options={{ title: t('checkout') }} />
       <Stack.Screen name="Payment" component={PaymentScreen} options={{ title: t('pay_now') }} />
       <Stack.Screen name="OrderSuccess" component={OrderSuccessScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="OpenRequest" component={OpenRequestScreen} options={{ title: '' }} />
+    </Stack.Navigator>
+  );
+}
+
+function VendorStack() {
+  const { t } = useTranslation();
+  return (
+    <Stack.Navigator screenOptions={{ headerTintColor: colors.text }}>
+      <Stack.Screen name="VendorHome" component={VendorHome} options={{ title: t('vendor_dashboard') }} />
+      <Stack.Screen name="VendorOrderDetail" component={VendorOrderDetail} options={{ title: t('orders') }} />
     </Stack.Navigator>
   );
 }
@@ -100,6 +114,7 @@ export default function RootNavigator() {
 
   let content: React.ReactNode;
   if (!user) content = <AuthStack />;
+  else if (user.role === 'vendor') content = <VendorStack />;
   else if (user.role === 'delivery_boy') content = <DeliveryStack />;
   else if (user.role === 'customer') content = <CustomerStack />;
   else content = <UseWebAdmin />;

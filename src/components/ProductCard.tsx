@@ -13,6 +13,8 @@ export interface Product {
   mrp: number | null;
   image_url: string;
   in_stock: boolean;
+  store_id?: string | null;
+  store_name?: string | null;
 }
 
 export default function ProductCard({ product, onPress }: { product: Product; onPress?: () => void }) {
@@ -38,6 +40,9 @@ export default function ProductCard({ product, onPress }: { product: Product; on
         <Text numberOfLines={2} style={styles.name}>
           {product.name}
         </Text>
+        {!!product.store_name && (
+          <Text numberOfLines={1} style={styles.shop}>🏪 {product.store_name}</Text>
+        )}
         <Text style={styles.unit}>{product.unit}</Text>
       </TouchableOpacity>
       <View style={styles.bottom}>
@@ -76,6 +81,7 @@ const styles = StyleSheet.create({
   },
   badgeText: { color: '#fff', fontSize: 10, fontWeight: '800' },
   name: { marginTop: 8, fontWeight: '700', color: colors.text, fontSize: 13, lineHeight: 18 },
+  shop: { fontSize: 11, color: colors.primary, fontWeight: '700', marginTop: 2 },
   unit: { color: colors.faint, fontSize: 12, marginTop: 2 },
   bottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 },
   price: { fontWeight: '800', color: colors.text, fontSize: 15 },
